@@ -1,8 +1,5 @@
 import argparse
-
 from core.crawler import tecaCrawler
-
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-u', '--folderurl', action = 'store', dest = 'url',required = True, help = 'Minhateca folder URL')
