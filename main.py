@@ -1,28 +1,20 @@
-import requests
-from bs4 import BeautifulSoup
+import argparse
+
+from core.crawler import tecaCrawler
+
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-u', '--folderurl', action = 'store', dest = 'url',required = True, help = 'Minhateca folder URL')
+parser.add_argument('-o', '--output', action = 'store', dest = 'filename', required = True, help = 'file name')
+
+args = parser.parse_args()
+
 
 
 base_url = 'http://minhateca.com.br'
-url = '' #'http://minhateca.com.br/FOLDER'
-filename =  'links'
-
-
-def tecaCrawler(url, base_url):
-    urls_dict = {}
-    r = requests.get(url)
-    soup = BeautifulSoup(r.content, "lxml")
-    files = soup.find("div", {"id": "foldersList"})
-    if files is None:
-        files = soup.find_all("a", {"class": "expanderHeader downloadAction"})
-        for f in files:
-            urls_dict.update({f.get_text().strip(): base_url + f["href"]})
-        return urls_dict
-    else:
-        for f in files.find_all('a'):
-            tt = tecaCrawler(base_url + f['href'],base_url )
-            urls_dict.update(tt)
-            #print (f['href'], f.get_text())
-        return urls_dict
+url = args.url
+filename = args.filename
 
 
 a = tecaCrawler(url, base_url)
